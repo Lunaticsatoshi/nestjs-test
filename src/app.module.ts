@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { GameModule } from './modules/game/game.module';
+import { RoomModule } from './modules/room/room.module';
 import { UserModule } from './modules/user/user.module';
 
 @Module({
@@ -13,7 +13,7 @@ import { UserModule } from './modules/user/user.module';
       entities: [__dirname + '/**/*.model{.ts,.js}'],
       synchronize: true,
     }),
-    GameModule,
+    RoomModule,
     UserModule,
   ],
   controllers: [AppController],
