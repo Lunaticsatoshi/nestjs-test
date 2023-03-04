@@ -6,7 +6,7 @@ import {
   UseGuards,
   Body,
 } from '@nestjs/common';
-import { ApiHeader, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { AuthService } from './auth/auth.service';
