@@ -10,7 +10,7 @@ import { Bind } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { CreateChatDto } from './chat.dto';
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: '*:*' })
 export class ChatGateway implements NestGateway {
   constructor(private chatService: ChatService) {}
 

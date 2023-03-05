@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+
 import { Chat } from './chat.model';
+import { RoomService } from '../room.service';
 
 @Injectable()
 export class ChatService {
   constructor(
     @InjectRepository(Chat) private chatRepository: Repository<Chat>,
+    private readonly roomService: RoomService,
   ) {}
 
   private allUsers = [];
@@ -17,7 +20,8 @@ export class ChatService {
   }
 
   async saveChat(chat: Partial<Chat>): Promise<void> {
-    await this.chatRepository.save(chat);
+    const room = await this.roomService.findOneById(chat.roomId);
+    await this.chatRepository.save({ ...chat, room });
   }
 
   userConnected(userName: string, registrationToken: string) {
