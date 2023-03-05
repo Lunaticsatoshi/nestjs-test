@@ -1,4 +1,4 @@
 export class CreateChatDto {
-  message: string;
+  body: string;
   roomId: number;
 }
