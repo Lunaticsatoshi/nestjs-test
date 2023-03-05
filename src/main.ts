@@ -5,7 +5,14 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors();
+  app.enableCors({
+    origin: '*',
+    allowedHeaders:
+      'X-Requested-With, Content-Type, Origin, Authorization, Accept, Accept-Encoding, x-correlation-id, x-api-key',
+    exposedHeaders:
+      'X-Requested-With, Content-Type, Origin, Authorization, Accept, Accept-Encoding',
+    methods: 'POST, PUT, GET, DELETE, PATCH, HEAD',
+  });
 
   const config = new DocumentBuilder()
     .setTitle('Api example')
