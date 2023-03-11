@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { MongooseModule } from '@nestjs/mongoose';
 
-import { Users } from './user.model';
+import { User, UserSchema } from './user.model';
 import { UsersService } from './user.service';
 import { UserController } from './user.controller';
 import { AuthService } from './auth/auth.service';
@@ -18,7 +18,7 @@ import { jwtConstants } from '../../constants';
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '60min' },
     }),
-    TypeOrmModule.forFeature([Users]),
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
   providers: [UsersService, AuthService, LocalStrategy, JwtStrategy],
   controllers: [UserController],
