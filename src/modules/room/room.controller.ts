@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import {
   Controller,
   Get,
@@ -18,7 +19,7 @@ import { CreateRoomDto } from './room.dto';
 export class RoomController {
   constructor(private roomService: RoomService) {}
 
-  @Get(':offset')
+  @Get('all/:offset')
   @ApiParam({
     name: 'offset',
     description: 'Gets the Room by id',
@@ -48,8 +49,11 @@ export class RoomController {
   @ApiBearerAuth('access-token')
   @UseGuards(JwtAuthGuard)
   async getRoom(@Param() params) {
+    console.log(params);
     try {
-      const room = await this.roomService.findOneById(params.id);
+      const room = await this.roomService.findOneById(
+        new ObjectId(params.id) as any,
+      );
 
       if (!room) {
         return { status: 404, message: 'Room not found' };
@@ -81,7 +85,10 @@ export class RoomController {
   @UseGuards(JwtAuthGuard)
   async updateRoom(@Param() params, @Body() { name }: CreateRoomDto) {
     try {
-      return await this.roomService.updateRoom(params.id, name);
+      return await this.roomService.updateRoom(
+        new ObjectId(params.id) as any,
+        name,
+      );
     } catch (error) {
       return { status: 500, message: 'Something went wrong' };
     }
@@ -96,7 +103,7 @@ export class RoomController {
   @UseGuards(JwtAuthGuard)
   async deleteRoom(@Param() params) {
     try {
-      return await this.roomService.deleteRoom(params.id);
+      return await this.roomService.deleteRoom(new ObjectId(params.id) as any);
     } catch (error) {
       return { status: 500, message: 'Something went wrong' };
     }
