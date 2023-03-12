@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ObjectId } from 'mongoose';
 
 @Schema({
   timestamps: true,
@@ -12,7 +13,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
   },
 })
 export class User {
-  _id: string;
+  _id: ObjectId;
 
   @Prop()
   username: string;
