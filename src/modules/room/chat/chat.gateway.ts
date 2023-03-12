@@ -5,12 +5,14 @@ import {
   WebSocketGateway,
 } from '@nestjs/websockets';
 import { NestGateway } from '@nestjs/websockets/interfaces/nest-gateway.interface';
-import { Bind } from '@nestjs/common';
+import { Bind, UseGuards } from '@nestjs/common';
 
 import { ChatService } from './chat.service';
 import { CreateChatDto } from './chat.dto';
+import { JwtAuthGuard } from '../../../common/guards/jwt-auth.guard';
 
 @WebSocketGateway({ cors: '*:*' })
+@UseGuards(JwtAuthGuard)
 export class ChatGateway implements NestGateway {
   constructor(private chatService: ChatService) {}
 
