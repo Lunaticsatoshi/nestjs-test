@@ -1,33 +1,25 @@
-import {
-  Entity,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryGeneratedColumn,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ObjectId, Schema as MongooseSchema } from 'mongoose';
 
-import { Room } from '../room.model';
-
-@Entity()
+@Schema({
+  timestamps: true,
+  toJSON: {
+    getters: true,
+    virtuals: true,
+  },
+  toObject: {
+    getters: true,
+    virtuals: true,
+  },
+})
 export class Chat {
-  @PrimaryGeneratedColumn()
-  id: number;
+  _id: ObjectId;
 
-  @Column()
+  @Prop()
   body: string;
 
-  @Column()
-  roomId: number;
-
-  @ManyToOne(() => Room, (room) => room.id, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'roomId', referencedColumnName: 'id' })
-  room: Room;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Room', index: true })
+  roomId: ObjectId;
 }
+
+export const ChatSchema = SchemaFactory.createForClass(Chat);

@@ -18,10 +18,23 @@ import { CreateRoomDto } from './room.dto';
 export class RoomController {
   constructor(private roomService: RoomService) {}
 
-  @Get()
-  async getAllRooms() {
+  @Get(':offset')
+  @ApiParam({
+    name: 'offset',
+    description: 'Gets the Room by id',
+  })
+  async getAllRooms(@Param() params) {
+    const offset = params.offset;
+    const limit = 10;
     try {
-      return await this.roomService.findAll();
+      return await this.roomService.findAll(
+        {},
+        {
+          skip: offset,
+          limit: limit,
+          sort: { createdAt: -1 },
+        },
+      );
     } catch (error) {
       return { status: 500, message: 'Something went wrong' };
     }

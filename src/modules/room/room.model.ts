@@ -1,22 +1,22 @@
-import {
-  Entity,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ObjectId } from 'mongoose';
 
-@Entity()
+@Schema({
+  timestamps: true,
+  toJSON: {
+    getters: true,
+    virtuals: true,
+  },
+  toObject: {
+    getters: true,
+    virtuals: true,
+  },
+})
 export class Room {
-  @PrimaryGeneratedColumn()
-  id: number;
+  _id: ObjectId;
 
-  @Column()
+  @Prop()
   name: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
 }
+
+export const RoomSchema = SchemaFactory.createForClass(Room);

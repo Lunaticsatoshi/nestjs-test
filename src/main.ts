@@ -1,3 +1,4 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
@@ -13,6 +14,14 @@ async function bootstrap() {
       'X-Requested-With, Content-Type, Origin, Authorization, Accept, Accept-Encoding',
     methods: 'POST, PUT, GET, DELETE, PATCH, HEAD',
   });
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      skipMissingProperties: true,
+      transform: true,
+    }),
+  );
 
   const config = new DocumentBuilder()
     .setTitle('Api example')

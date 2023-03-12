@@ -1,27 +1,22 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 import { Chat } from './chat.model';
-import { RoomService } from '../room.service';
-
 @Injectable()
 export class ChatService {
-  constructor(
-    @InjectRepository(Chat) private chatRepository: Repository<Chat>,
-    private readonly roomService: RoomService,
-  ) {}
+  constructor(@InjectModel(Chat.name) private chatRepository: Model<Chat>) {}
 
   private allUsers = [];
   private connectedUsers = [];
 
   async getChats(): Promise<Chat[]> {
-    return await this.chatRepository.find();
+    const chats = await this.chatRepository.find();
+    return chats.map((chat) => chat.toObject());
   }
 
   async saveChat(chat: Partial<Chat>): Promise<void> {
-    const room = await this.roomService.findOneById(chat.roomId);
-    await this.chatRepository.save({ ...chat, room });
+    await this.chatRepository.create({ ...chat });
   }
 
   userConnected(userName: string, registrationToken: string) {
